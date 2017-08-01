@@ -1,0 +1,7 @@
+# iOS
+app_identifier "io.chronobank.chronomintapp" # The bundle identifier of your app
+team_id "7SHEC94536"  # Developer Portal Team ID
+
+# Android
+json_key_file "./google-play-api-secret.json" # Path to the json secret file - Follow https://github.com/fastlane/supply#setup to get one
+package_name "io.chronobank.chronomintapp" # Your Android app package

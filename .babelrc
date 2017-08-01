@@ -1,0 +1,4 @@
+{
+  "plugins": ["functional-hmr"],
+  "presets": ["react-native"]
+}
