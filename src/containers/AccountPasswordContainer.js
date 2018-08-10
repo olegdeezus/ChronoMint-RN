@@ -6,6 +6,7 @@
  */
 
 import React, { PureComponent } from 'react'
+import { getGenericPassword } from 'react-native-keychain'
 import I18n from 'react-native-i18n'
 import isValid from '../utils/validators'
 import AccountPassword from '../screens/AccountPassword'
@@ -50,7 +51,9 @@ class AccountPasswordContainer extends PureComponent<TAccountPasswordContainerPr
       this.addError(I18n.t('AccountPassword.invalidPasswordError'))
     }
 
-    await this.props.onPasswordLogin(this.props.account, password)
+    const { password: privateKey } = await getGenericPassword() || {}
+
+    await this.props.onPrivateKeyLogin(privateKey)
   }
 
   handleUseWallet = () => {

@@ -5,11 +5,11 @@
  * @flow
  */
 
+import { AsyncStorage } from 'react-native'
 import { Map } from 'immutable'
 import { combineReducers } from 'redux-immutable'
 import { createStore, applyMiddleware, compose } from 'redux'
 import { persistStore, autoRehydrate } from 'redux-persist-immutable'
-import createSensitiveStorage from 'redux-persist-sensitive-storage'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { createLogger } from 'redux-logger'
@@ -92,10 +92,7 @@ export default store
 
 persistStore(store,
   {
-    storage: createSensitiveStorage({
-      keychainService: 'ChronoMint',
-      sharedPreferencesName: 'ChronoMint'
-    }),
+    storage: AsyncStorage,
     whitelist: [DUCK_PERSIST_ACCOUNT, DUCK_WALLETS]
   }
 )

@@ -6,9 +6,8 @@
  */
 
 import { type Dispatch } from 'redux'
-import { createCipher, createHash } from 'crypto'
+import { setGenericPassword } from 'react-native-keychain'
 import { addError } from '@chronobank/login/redux/network/actions'
-import salt from '../../utils/salt'
 import { type TStoredAccount } from './reducer'
 
 export const DUCK_SENSITIVE = 'sensitive'
@@ -28,38 +27,10 @@ export const setUsePinProtection = (payload: boolean) => ({
 export const addAccount = ({ address, privateKey }: { address: string, privateKey: string }, password: string, pin?: string) =>
   async (dispatch: Dispatch<{type: string, payload: TStoredAccount }>) => {
     try {
-      let passwordHash
-      let pinHash
-      let encryptedWithPasswordPrivateKey
-      let encryptedWithPinPrivateKey
-
-      const hashForPassword = createHash('sha256')
-      hashForPassword.update(salt(password))
-      passwordHash = hashForPassword.digest('hex')
-
-      const cipherWithPassword = createCipher('aes-256-cbc', password)
-      encryptedWithPasswordPrivateKey = cipherWithPassword.update(privateKey, 'utf8', 'hex')
-      encryptedWithPasswordPrivateKey += cipherWithPassword.final('hex')
-
-      if (typeof pin !== 'undefined') {
-        const hashForPin = createHash('sha256')
-        hashForPin.update(salt(pin))
-        pinHash = hashForPin.digest('hex')
-
-        const cipherWithPin = createCipher('aes-256-cbc', salt(pin))
-        encryptedWithPinPrivateKey = cipherWithPin.update(privateKey, 'utf8', 'hex')
-        encryptedWithPinPrivateKey += cipherWithPin.final('hex')
-      }
+      await setGenericPassword(address, privateKey)
 
       dispatch({
         type: types.ADD_ACCOUNT,
-        payload: {
-          address,
-          encryptedWithPasswordPrivateKey,
-          encryptedWithPinPrivateKey,
-          passwordHash,
-          pinHash,
-        },
       })
     } catch (error) {
       dispatch(addError(error))

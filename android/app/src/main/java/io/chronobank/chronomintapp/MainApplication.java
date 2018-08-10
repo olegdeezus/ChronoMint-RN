@@ -2,10 +2,10 @@ package io.chronobank.chronomintapp;
 
 import android.app.Application;
 import android.support.annotation.Nullable;
-import br.com.classapp.RNSensitiveInfo.RNSensitiveInfoPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.bitgo.randombytes.RandomBytesPackage;
 import com.facebook.react.ReactApplication;
+import com.oblador.keychain.KeychainPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -31,12 +31,12 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+          new KeychainPackage(),
           new SplashScreenReactPackage(),
           new RNI18nPackage(),
           new RandomBytesPackage(),
           new RNDeviceInfo(),
-          new RNOSModule(),
-          new RNSensitiveInfoPackage()
+          new RNOSModule()
       );
     }
 
